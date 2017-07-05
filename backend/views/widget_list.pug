@@ -1,0 +1,33 @@
+extends index
+
+block content
+
+  div.container
+    if save==='success'
+      div.alert.alert-success(role='alert') Widget saved succesfully!
+
+    if deleteStatus==='ok'
+      div.alert.alert-success(role='alert') Widget deleted succesfully!
+
+    table.table
+      caption You have #{widgets.length} widget(s)
+      thead
+        tr
+          th №
+          th Widget
+          th Action
+      tbody
+        - var rowNum = 1
+        each widget in widgets
+          tr
+            th(scope='row') #{rowNum++}
+            td
+              - var url = 'http://localhost:8080/get_embedded?days='+widget.days+'&city='+widget.city+'&align='+widget.align
+              iframe(src= url, width= "100%", height= "100%", frameborder= "0")
+            td
+              - var widget_url = '/widget/' + widget.id
+              form(action= widget_url)
+                button.btn.btn-default(type='submit') Edit
+              - var widget_delete_url = widget_url + '?_method=DELETE'
+              form(method='POST', action= widget_delete_url)
+                button.btn.btn-default(type='submit') Delete

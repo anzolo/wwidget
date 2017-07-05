@@ -1,0 +1,23 @@
+extends main
+
+block body
+
+  nav.navbar.navbar-default.navbar-static-top
+    div.container
+      div.navbar-header
+        a(class="navbar-brand" href='/widget') All widgets
+
+      ul.nav.navbar-nav.navbar-left
+        li
+          a(href='/new')
+            span(class="glyphicon glyphicon-plus", aria-hidden="true")
+            | Create new widget
+
+      ul.nav.navbar-nav.navbar-right
+        li: p.navbar-text You login as Username
+        li
+          a(href='/logout')
+            span(class="glyphicon glyphicon-log-out", aria-hidden="true")
+            | Logout
+
+  block content

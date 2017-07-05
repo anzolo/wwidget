@@ -1,0 +1,58 @@
+extends index
+
+block content
+
+  div.container
+    if message
+      div.alert.alert-success(role='alert')= message
+
+    - var save_url = isNew? '/widget' : '/widget/' + widget.id + '?_method=PUT'
+    form#data.form-horizontal(method='POST', action= save_url)
+      div.form-group
+        label.col-sm-2.control-label(for='alignField') Align
+        div#alignField.col-sm-10
+          label.radio-inline
+            input(type='radio', name='align', value='v', checked= (widget.align==='v'))
+            | Vertical
+          label.radio-inline
+            input(type='radio', name='align', value='h', checked= (widget.align==='h'))
+            | Horisontal
+
+      div.form-group
+        label.col-sm-2.control-label(for='cityField') City
+        div#cityField.col-sm-10
+          select#city.form-control(form='data', name='city')
+            each city in cities
+              - var city_attr = {name:'city', value: city}
+              - if (city===widget.city) {
+              -   city_attr.selected = 'selected'
+              - }
+              option()&attributes(city_attr)= city
+
+      div.form-group
+        label.col-sm-2.control-label(for='periodField') Forecast period (days)
+        div#periodField.col-sm-10
+          select#days.form-control(form='data', name='days')
+            each period in periods
+              - var period_attr = {name:'period', value: period}
+              - if (period===widget.days) {
+              -   period_attr.selected = 'selected'
+              - }
+              option()&attributes(period_attr)= period
+
+    div.form-group
+      //- if isNew
+      form(action='/widget')
+        button.btn.btn-default.pull-right(type='submit') Cancel
+
+        button.btn.btn-default.pull-right(type='submit', form='data') Save
+      unless isNew
+        //- - var show_url = 'http://localhost:8080/get_embedded?' +
+
+        //- form(action= widget_url)
+        button.btn.btn-default.pull-right(type='submit', onclick='openInNewTab(getURL())') Show widget
+        button.btn.btn-default.pull-right(type='submit', onclick='getCode()') Get code
+
+    unless isNew
+      div.form-group
+        textarea#code.form-control(rows=10)

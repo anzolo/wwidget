@@ -1,0 +1,8 @@
+{
+    "DBHost": "mongo",
+    "cities": ["Москва", "Санкт-Петербург", "Нижний Новгород", "Тюмень"],
+    "periods": [1, 3, 5],
+    "redisDBIndex": 0,
+    "updateDateKey": "lastUpdateDate",
+    "configInterval": 5000
+}

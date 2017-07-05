@@ -1,0 +1,28 @@
+html(lang='en')
+  head
+    - var url = '/style'+align+'.css'
+    link(href= url, rel='stylesheet', type='text/css')
+
+  body
+    div= city
+
+    each day in days
+      ul
+        li #{day.date}
+        li #{day.low}&deg;C - #{day.high}&deg;C
+
+    //- if align==='v'
+    //-   //- ul
+    //-     //- li Date, High, Low
+
+    //-   each day in days
+
+    //- else
+    //-   //- ul
+    //-   //-   li Date
+    //-   //-   li High, &deg;C
+    //-   //-   li Low, &deg;C
+    //-   each day in days
+    //-     ul
+    //-       li= #{day.date}
+    //-       li #{day.low}&deg;C - #{day.high}&deg;C

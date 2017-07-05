@@ -1,0 +1,22 @@
+
+version: "2"
+services:
+
+    backend:
+        build:
+            context: .
+            dockerfile: backend/Dockerfile
+        ports:
+            - "8080:8080"
+            - "9500:9500"
+        volumes:
+            - ./backend:/srv/backend
+    redis:
+        image: redis:latest
+        command: redis-server --appendonly yes
+        volumes:
+            - ./redis-data:/data
+    mongo:
+        image: mongo:latest
+        volumes:
+            - ./mongo-data:/data/db

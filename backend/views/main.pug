@@ -1,0 +1,17 @@
+html(lang='en')
+  head
+    block head
+      meta(charset='utf-8')
+      title Weather widget admin panel
+
+      link(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
+
+      script(type="text/javascript", src="/bundle.js")
+
+  body
+    block scripts
+    block body
+      block content
+    //if IE 6
+      h3.bad Your browser too old. Please update it.
+    br
