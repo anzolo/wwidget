@@ -9,9 +9,9 @@ services:
         ports:
             - "8080:8080"
             - "9500:9500"
-        # depends_on:
-        #     - redis
-        #     - mongo
+        depends_on:
+            - redis
+            - mongo
         volumes:
             - ./backend:/srv/backend
     redis:
