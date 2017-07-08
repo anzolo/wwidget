@@ -21,11 +21,17 @@ const getForecast = () => {
                 console.log('Error ' + err);
             });
 
-            client.select(config.redisDBIndex, function () {
-                client.set('forecast:'+ cities[i], JSON.stringify(data.query.results.channel.item.forecast), redis.print); // forecast
-                client.set(config.updateDateKey, new Date().toString()); // update date
-                client.quit();
-            });
+            if (data) {
+
+                client.select(config.redisDBIndex, function () {
+
+                    client.set('forecast:' + cities[i], JSON.stringify(data.query.results.channel.item.forecast), redis.print); // forecast
+                    client.set(config.updateDateKey, new Date().toString()); // update date
+                    client.quit();
+                });
+            } else {
+                console.log('Error: empty forecast response');
+            }
         });
     }
 }

@@ -16,7 +16,8 @@ function getWidgets(req, res) {
 
         res.render('widget_list', {
             widgets: widgets,
-            save: req.query.save
+            save: req.query.save,
+            user: req.user
         });
     });
 }
@@ -48,7 +49,8 @@ function getWidget(req, res) {
             cities: config.cities,
             periods: config.periods,
             isNew: false,
-            widget: widget
+            widget: widget,
+            user: req.user
         });
     });
 }
@@ -79,7 +81,8 @@ function updateWidget(req, res) {
                 periods: config.periods,
                 isNew: false,
                 widget: widget,
-                message:"Save succesfully"
+                message:"Save succesfully",
+                user: req.user
             });
 
         });

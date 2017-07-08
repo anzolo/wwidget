@@ -14,7 +14,7 @@ block body
             | Create new widget
 
       ul.nav.navbar-nav.navbar-right
-        li: p.navbar-text You login as Username
+        li: p.navbar-text You login as #{user.firstName} #{user.lastName}(#{user.username})
         li
           a(href='/logout')
             span(class="glyphicon glyphicon-log-out", aria-hidden="true")

@@ -1,0 +1,19 @@
+extends main
+
+block body
+  div#login.container.col-sm-4.col-sm-offset-4
+    form#credentials.form-vertical(method='post', action='/signup')
+
+      legend(align='center'): strong.text-info Registration details
+
+      if message!=''
+        div.alert.alert-danger= message
+
+      div.form-group
+        input(type='text', name='username', class='form-control', placeholder='Username',required, autofocus)
+        input(type='password', name='password', class='form-control nomargin', placeholder='Password', required)
+        input(type='email', name='email', class='form-control', placeholder='Email',required)
+        input(type='text', name='firstName', class='form-control', placeholder='First Name',required)
+        input(type='text', name='lastName', class='form-control', placeholder='Last Name',required)
+
+      button.btn.btn-primary(type='submit', form='credentials') Register

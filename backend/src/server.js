@@ -8,12 +8,17 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override')
 
 const bodyParser = require('body-parser');
-
-const widget = require('./routes/widget.route');
+const cookieParser = require('cookie-parser');
 
 const config = require('../config.json');
+const initPassport = require('./auth/init');
 
 const forecastService = require('./weather.service');
+
+const flash = require('connect-flash');
+
+const passport = require('passport');
+const expressSession = require('express-session');
 
 const options = {
   server: {
@@ -40,6 +45,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 //app
 const app = express();
+
+//config middleware
 app.set('view engine', 'pug');
 
 app.use(methodOverride('_method'))
@@ -54,73 +61,37 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({
   type: 'application/json'
 }));
+app.use(cookieParser());
 
-// const initRedisKey = (dbIndex, key, value) => {
-//   let client = redis.createClient('6379', 'redis');
+app.use(expressSession({
+  secret: 'mySecretKey357159'
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-//   client.on("error", function (err) {
-//     console.log("Error " + err);
-//   });
+app.use(flash());
 
-//   client.select(dbIndex, function () {
-//     client.set(key, value, redis.print);
-//     client.quit();
-//   });
-// };
+initPassport(passport);
 
-// initRedisKey(config.redisDBIndex, config.citiesKey, config.cities);
+const routes = require('./routes/index')(passport);
+app.use('/', routes);
 
-app.get('/new', function (req, res, next) {
-  res.render('widget', {
-    cities: config.cities,
-    periods: config.periods,
-    isNew: true,
-    widget: {
-      align: 'v'
-    }
+/// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: err
   });
 });
 
-app.route("/widget")
-  .get(widget.getWidgets)
-  .post(widget.postWidget);
-app.route("/widget/:id")
-  .get(widget.getWidget)
-  .put(widget.updateWidget)
-  .delete(widget.deleteWidget);
-
-app.get('/get_embedded', function (req, res, next) {
-
-  let client = redis.createClient('6379', 'redis');
-  client.on('error', function (err) {
-    console.log('Error ' + err);
-  });
-  client.select(config.redisDBIndex, function () {
-
-    let cityKey = 'forecast:' + req.query.city;
-
-    client.get(cityKey, function (err, reply) {
-      if (err) {
-        console.log('Error ' + err);
-      } else {
-
-        let days = JSON.parse(reply).slice(0, req.query.days);
-
-        // let days = reply.slice(0, 25);
-
-        res.render('embedded', {
-          city: req.query.city,
-          days: days,
-          align: req.query.align
-        });
-
-      }
-    });
-    client.quit();
-  });
-
-
-})
+//routes
 
 app.listen(PORT, HOST);
 console.log('Running on http://' + HOST + ':' + PORT);
