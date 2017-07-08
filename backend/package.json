@@ -5,7 +5,8 @@
   "author": "Anatoly Zolotov <aLzoLotov@gmail.com>",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --inspect=0.0.0.0:9500 ./src/server.js",
+    "start": "nodemon ./src/server.js",
+    "debug": "nodemon --inspect=0.0.0.0:9500 ./src/server.js",
     "test": "./node_modules/.bin/mocha 'src/**/*.spec.js' --reporter spec --watch --slow 1000 -t 1000"
   },
   "dependencies": {
